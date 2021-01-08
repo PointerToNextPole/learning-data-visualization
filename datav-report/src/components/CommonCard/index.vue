@@ -57,4 +57,22 @@
     color: #333;
     font-weight: 700;
   }
+
+  .increase {
+    width: 0;
+    height: 0;
+    border-width: 5px;
+    border-color: transparent transparent red transparent;
+    border-style: solid;
+    margin: 0 0 5px 5px;
+  }
+
+  .decrease {
+    width: 0;
+    height: 0;
+    border-width: 5px;
+    border-color: green transparent transparent transparent;
+    border-style: solid;
+    margin: 5px 0 0 5px;
+  }
 </style>

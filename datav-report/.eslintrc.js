@@ -13,7 +13,8 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    // indent锁进
-    indent: 'off'
+    // indent 缩进
+    'indent': 'off',
+    'space-before-function-paren': 'off'
   }
 }

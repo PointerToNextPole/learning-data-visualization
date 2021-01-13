@@ -56,21 +56,39 @@
             let cities = ['北京', '天津', '上海', '重庆', '石家庄', '太原', '呼和浩特', '哈尔滨', '长春',
                 '沈阳', '济南', '南京', '合肥', '杭州', '南昌', '福州', '郑州', '武汉', '长沙', '广州',
                 '南宁', '西安', '银川', '兰州', '西宁', '乌鲁木齐', '成都', '贵阳', '昆明', '拉萨', '海口']
-            let randomCount = 500
 
             let targetCity = mapv.utilCityCenter.getCenterByCityName('北京')
-            let curve = new mapvgl.BezierCurve()
+            let nodeData = [{
+                x: targetCity.lng,
+                y: targetCity.lat
+            }]
+            let edgeData = []
+            let randomCount = 500
             for (let i = 0; i < randomCount; i++) {
                 let startCity = mapv.utilCityCenter.getCenterByCityName(cities[parseInt(Math.random() * cities.length)])
-                curve.setOptions({
-                    start: [startCity.lng - 5 + 10 * Math.random(), startCity.lat - 5 + 10 * Math.random()],
-                    end: [targetCity.lng, targetCity.lat]
+                nodeData.push({
+                    x: startCity.lng - 5 + 10 * Math.random(),
+                    y: startCity.lat - 5 + 10 * Math.random()
                 })
-                let curveData = curve.getPoints()
+                edgeData.push({
+                    source: i + 1, // 边的起点
+                    target: 0 // 边的终点
+                })
+            }
+            let bundling = mapv.utilForceEdgeBundling().nodes(nodeData).edges(edgeData)
+            let results = bundling()
+            console.log(results)
+
+            for (let i = 0; i < results.length; i++) {
+                let line = results[i]
+                let coordinates = []
+                for (let j = 0; j < line.length; j++) {
+                    coordinates.push([line[j].x, line[j].y])
+                }
                 data.push({
                     geometry: {
                         type: 'LineString',
-                        coordinates: curveData
+                        coordinates
                     }
                 })
             }
@@ -85,6 +103,7 @@
             // 2. 初始化 LineLayer
             let lineLayer = new mapvgl.LineLayer({
                 color: 'rgba(55, 50, 250, 0.3)',
+                blend: 'lighter'
             })
             view.addLayer(lineLayer)
             lineLayer.setData(data)

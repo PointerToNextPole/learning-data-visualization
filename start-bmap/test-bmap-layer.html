@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=hDdCF04FamUm94EiU6j0ASAewm5PKoE4"></script>
+    <style>
+        html,
+        body,
+        #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .anchorBL {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        var map = new BMapGL.Map('map');
+        var point = new BMapGL.Point(116.404, 39.915);
+        map.centerAndZoom(point, 10);
+        map.enableScrollWheelZoom(true); // 使得鼠标滚轮可用
+        map.setMapStyleV2({
+            styleId: 'ebeae4e8cc1f4fb018b2705dc7d8c056'
+        })
+        let myIcon = new BMapGL.Icon(
+            'https://www.youbaobao.xyz/datav-res/datav/location.png',
+            new BMapGL.Size(60, 60),
+            {
+                anchor: new BMapGL.Size(0, 0),
+                imageOffset: new BMapGL.Size(0, 0)
+            }
+        )
+        let marker = new BMapGL.Marker(point, { icon: myIcon })
+        let content = '欢迎学习数据可视化体系课'
+        let div = document.createElement('div')
+        div.innerText = content
+        marker.addEventListener('click', function() {
+            let infoWindow = new BMapGL.InfoWindow (div , {
+                width: 250,
+                height: 100,
+                title: '说明',
+                offset: new BMapGL.Size(30, 0)
+            })
+            map.openInfoWindow(infoWindow, point)
+        })
+        map.addOverlay(marker)
+
+        let polyline = new BMapGL.Polyline([
+            new BMapGL.Point(115.800, 39.010),
+            new BMapGL.Point(115.000, 39.840),
+            new BMapGL.Point(114.200, 41.800)
+        ], {
+            strokeColor: 'red',
+            strokeWeight: 4,
+            strokeOpacity: 0.5
+        })
+        map.addOverlay(polyline)
+
+        let polygon = new BMapGL.Polygon([
+            new BMapGL.Point(116.800, 39.800),
+            new BMapGL.Point(117.000, 39.820),
+            new BMapGL.Point(117.200, 40.800),
+            new BMapGL.Point(116.200, 40.600)
+        ], {
+            strokeColor: 'red',
+            strokeWeight: 2,
+            fillColor: 'blue'
+        })
+        map.addOverlay(polygon)
+
+        let label = new BMapGL.Label('欢迎学习数据可视化体系课', {
+            position: point, // 中心点
+            offset: new BMapGL.Size(100, 10)
+        })
+        label.setStyle({
+            width: '100px',
+            height: '20px',
+            padding: '20px',
+            color: '#fff',
+            background: 'red',
+            overflow: 'hidden'
+        })
+        label.addEventListener('click', function(e) {
+            alert(e.target.content)
+        })
+        map.addOverlay(label)
+    </script>
+
+</body>
+
+</html>

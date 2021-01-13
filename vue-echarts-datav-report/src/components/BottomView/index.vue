@@ -168,7 +168,7 @@
             clockwise: false,
             itemStyle: {
               borderWidth: 4,
-              borderColor: '#fff'
+              borderColor: '#fff '
             }
           }],
           legend: {

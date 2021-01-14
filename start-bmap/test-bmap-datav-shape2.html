@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=hDdCF04FamUm94EiU6j0ASAewm5PKoE4"></script>
+    <script src="https://mapv.baidu.com/gl/examples/static/common.js"></script>
+    <script src="https://mapv.baidu.com/build/mapv.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.min.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.97/dist/mapvgl.threelayers.min.js"></script>
+
+    <style>
+        html,
+        body,
+        #map_container {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .anchorBL {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map_container"></div>
+
+    <script>
+        let map = initBMap()
+        initData().then(data => {
+            setData(map, data)
+        })
+
+        // 初始化百度地图
+        function initBMap() {
+            let cityCenter = mapv.utilCityCenter.getCenterByCityName('北京')
+            let map = initMap({
+                center: [106.540547, 29.564858],
+                tilt: 80,
+                heading: -45.3,
+                zoom: 17,
+            })
+            return map
+        }
+
+        function initData() {
+            let data = []
+            return fetch('https://www.youbaobao.xyz/datav-res/examples/chongqing.json')
+                .then(res => res.json())
+                .then(res => {
+                    let polygons = []
+                    for (let i = 0; i < res.length; i++) {
+                        var line = res[i]
+                        var polygon = []
+                        let pt = [line[1] * 512, line[2] * 512]
+                        for (let j = 3; j < line.length; j += 2) {
+                            pt[0] += line[j] / 100 / 2
+                            pt[1] += line[j + 1] / 100 / 2
+                            polygon.push([pt[0], pt[1]])
+                        }
+                        polygons.push({
+                            geometry: {
+                                type: 'Polygon',
+                                coordinates: [polygon]
+                            },
+                            properties: {
+                                height: line[0] / 2
+                            }
+                        })
+                    }
+                    return polygons
+                })
+        }
+
+        function setData(map, data) {
+            let view = new mapvgl.View({ map })
+            let shapeLayer = new mapvgl.ShapeLayer({
+                color: 'blue',
+                opacity: 0.3,
+                style: 'windowAnimation',
+                blend: 'lighter',
+                riseTime: 2000,
+                enablePicked: true,
+                selectedIndex: -1,
+                selectedColor: 'red',
+                autoSelect: true,
+                onClick: (e) => {
+                    console.log(e)
+                }
+            })
+            view.addLayer(shapeLayer)
+            shapeLayer.setData(data)
+        }
+    </script>
+
+</body>
+
+</html>

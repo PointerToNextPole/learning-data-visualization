@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=hDdCF04FamUm94EiU6j0ASAewm5PKoE4"></script>
+    <script src="https://mapv.baidu.com/gl/examples/static/common.js"></script>
+    <script src="https://mapv.baidu.com/build/mapv.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.min.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.97/dist/mapvgl.threelayers.min.js"></script>
+
+    <style>
+        html,
+        body,
+        #map_container {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .anchorBL {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map_container"></div>
+
+    <script>
+        let map = initBMap()
+        let data = initData()
+        setData()
+
+        // 初始化百度地图
+        function initBMap() {
+            let cityCenter = mapv.utilCityCenter.getCenterByCityName('北京')
+            let map = initMap({
+                center: [116.392394, 39.910683],
+                tilt: 80,
+                heading: -45.3,
+                zoom: 17,
+            })
+            return map
+        }
+
+        function initData() {
+            let data = [{
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [12958287.560934239, 4826420.121990554],
+                            [12959801.63393129, 4828874.558443741],
+                            [12961481.9187227, 4826328.322460731 ]
+                        ]
+                    ]
+                },
+                properties: {
+                    height: 200, // 多边形高度
+                }
+            }]
+            return data
+        }
+
+        function setData() {
+            let view = new mapvgl.View({ map })
+            let shapeLayer = new mapvgl.ShapeLayer({
+                color: 'blue',
+                opacity: 0.3,
+                style: 'noramal'
+            })
+            view.addLayer(shapeLayer)
+            shapeLayer.setData(data)
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <top-view />
-    <sales-view />
-    <bottom-view />
-    <map-view />
+    <top-view/>
+    <sales-view/>
+    <bottom-view/>
+    <map-view/>
   </div>
 </template>
 
@@ -12,21 +12,21 @@
   import SalesView from '../components/SalesView'
   import BottomView from '../components/BottomView'
   import MapView from '../components/MapView'
-export default {
-  name: 'Home',
-  components: {
-    TopView,
-    SalesView,
-    BottomView,
-    MapView
+
+  export default {
+    name: 'Home',
+    components: {
+      TopView,
+      SalesView,
+      BottomView,
+      MapView
+    }
   }
-}
 </script>
 
 <style>
   .home {
     width: 100%;
-    height: 100%;
     background-color: #eee;
     padding: 20px;
     box-sizing: border-box;

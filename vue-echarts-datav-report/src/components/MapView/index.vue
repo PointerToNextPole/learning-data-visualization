@@ -10,7 +10,7 @@
         </template>
         <template>
           <div class="chart-wrapper">
-
+            <liquidfill />
           </div>
         </template>
       </el-card>
@@ -30,10 +30,11 @@
 
 <script>
   import BMapScatter from '../BMapScatter'
+  import Liquidfill from '../LiquidFill'
 
   export default {
     name: 'index',
-    components: { BMapScatter }
+    components: { BMapScatter, Liquidfill }
   }
 </script>
 
